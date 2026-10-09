@@ -3,118 +3,459 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ScamShield: check a message before you trust it</title>
-  <meta name="description" content="Paste a message, link or screenshot and find out if it is a scam. Explanations in English, Hindi and Kannada.">
+  <title>ScamShield — AI Threat Radar & Cybersecurity Safety Assistant</title>
+  <meta name="description" content="Check suspicious messages, links and screenshots with AI. Instant verdict, risk score, dangerous phrase highlights, multilingual support (English, Hindi, Kannada) and emergency recovery guidance.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@600;800&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+Kannada:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Kannada:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body data-max-mb="{{ max_mb }}">
   <a class="skip-link" href="#main">Skip to the main content</a>
-  <header class="top">
-    <div class="wrap top-inner">
-      <p class="brand"><mark class="brand-mark">Scam</mark>Shield</p>
-      <p class="tagline">Got a strange message? Check it here before you reply, click or pay.</p>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="wrap header-inner">
+      <div class="brand-group">
+        <div class="brand-icon-wrap" aria-hidden="true">
+          <svg class="shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Scam<span class="brand-accent">Shield</span></span>
+          <div class="radar-status">
+            <span class="pulse-dot" aria-hidden="true"></span>
+            <span class="status-label">AI Threat Radar: Active</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="top-nav" aria-label="Main Navigation">
+        <button type="button" class="nav-link active" id="nav-btn-check">Check a message</button>
+        <button type="button" class="nav-link" id="nav-btn-recover">I already replied or clicked</button>
+      </nav>
+
+      <div class="header-actions">
+        <a class="sos-badge" href="tel:1930" aria-label="Call National Cybercrime Helpline 1930">
+          <svg class="phone-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.045 15.045 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1.01A11.36 11.36 0 018.57 3.9c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.52c0-.55-.45-1-.99-1z"/></svg>
+          <span class="sos-text">Helpline: <strong>1930</strong></span>
+          <span class="sos-pill">SOS</span>
+        </a>
+      </div>
     </div>
   </header>
 
-  <div class="wrap">
-    <div class="tabs" role="tablist" aria-label="What do you need?">
-      <button class="tab" role="tab" id="tab-check" aria-selected="true" aria-controls="panel-check" type="button">Check a message</button>
-      <button class="tab" role="tab" id="tab-recover" aria-selected="false" tabindex="-1" aria-controls="panel-recover" type="button">I already replied or clicked</button>
+  <!-- Main Workspace -->
+  <main class="wrap main-content" id="main" tabindex="-1">
+    <!-- Top HUD Notification Ticker -->
+    <div class="hud-ticker">
+      <div class="hud-left">
+        <span class="hud-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 9 9"/><path d="M12 12l5-5"/></svg>
+        </span>
+        <span class="hud-title">DEFCON 4 // THREAT RADAR ACTIVE</span>
+        <span class="hud-meta">Node: BLR-GATEWAY-09</span>
+      </div>
+      <div class="hud-right">
+        <span class="hud-stat"><span class="live-dot"></span> Signatures: <strong>1,492,804 Live</strong></span>
+        <span class="hud-stat">Latency: <strong>18ms</strong></span>
+      </div>
     </div>
-  </div>
 
-  <main class="wrap" id="main" tabindex="-1">
-    <!-- ============ CHECK ============ -->
-    <section id="panel-check" role="tabpanel" aria-labelledby="tab-check" class="grid">
-      <form id="check-form" class="card input-card" novalidate>
-        <label class="field-label" for="msg">Paste the message or link</label>
-        <textarea id="msg" rows="7" maxlength="{{ max_chars }}" placeholder="For example: &quot;Your bank account will be blocked today. Update KYC here...&quot;"></textarea>
+    <!-- Mode Navigation Tabs -->
+    <div class="tab-control-wrap">
+      <div class="tabs" role="tablist" aria-label="Choose Security Mode">
+        <button class="tab-btn active" role="tab" id="tab-check" aria-selected="true" aria-controls="panel-check" type="button">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="tab-icon" aria-hidden="true"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+          <span>Check a message</span>
+        </button>
+        <button class="tab-btn" role="tab" id="tab-recover" aria-selected="false" tabindex="-1" aria-controls="panel-recover" type="button">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="tab-icon" aria-hidden="true"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+          <span>I already replied or clicked</span>
+        </button>
+      </div>
+    </div>
 
-        <div class="upload">
-          <input type="file" id="img" accept="image/png,image/jpeg,image/webp" class="visually-hidden" tabindex="-1">
-          <label for="img" class="btn secondary" id="img-btn" tabindex="0">Add a screenshot</label>
-          <span id="img-name" class="muted"></span>
-          <button type="button" id="img-clear" class="linklike" hidden>Remove</button>
-        </div>
-        <img id="img-preview" class="preview" alt="Preview of your screenshot" hidden>
-
-        <div class="options">
-          <div>
-            <label class="field-label" for="lang-check">Explain in</label>
-            <select id="lang-check">
-              <option value="en">English</option>
+    <!-- ============ PANEL 1: CHECK A MESSAGE ============ -->
+    <section id="panel-check" role="tabpanel" aria-labelledby="tab-check" class="workspace-grid">
+      <!-- Input Console Form (Left Column) -->
+      <form id="check-form" class="panel-card console-card" novalidate>
+        <div class="sub-config-bar">
+          <div class="config-group">
+            <label class="config-label" for="lang-check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="config-icon" aria-hidden="true"><path d="M5 8l6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg>
+              <span>LANG:</span>
+            </label>
+            <select id="lang-check" class="lang-select" aria-label="Select explanation language">
+              <option value="en" selected>English</option>
               <option value="hi">हिन्दी (Hindi)</option>
               <option value="kn">ಕನ್ನಡ (Kannada)</option>
             </select>
           </div>
-          <fieldset class="seg">
-            <legend class="field-label">Style</legend>
-            <label><input type="radio" name="mode" value="simple" checked><span>Simple</span></label>
-            <label><input type="radio" name="mode" value="detailed"><span>Detailed</span></label>
+
+          <div class="config-group">
+            <span class="config-label">ANALYSIS:</span>
+            <fieldset class="mode-toggle">
+              <legend class="visually-hidden">Analysis Detail Mode</legend>
+              <label class="mode-option">
+                <input type="radio" name="mode" value="simple" checked>
+                <span class="mode-pill">Simple</span>
+              </label>
+              <label class="mode-option">
+                <input type="radio" name="mode" value="detailed">
+                <span class="mode-pill">
+                  <span class="mint-dot" aria-hidden="true"></span>
+                  Detailed
+                </span>
+              </label>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="input-field-group">
+          <div class="label-row">
+            <label class="field-label" for="msg">
+              <span>Paste the message, SMS, email text or link</span>
+            </label>
+            <span class="char-count" id="char-counter" aria-live="polite">0 / {{ max_chars }} chars</span>
+          </div>
+
+          <div class="textarea-container">
+            <textarea id="msg" rows="6" maxlength="{{ max_chars }}" placeholder="e.g., Dear Customer, your SBI account has been temporarily blocked due to incomplete KYC. Update within 24 hours at http://sbi-kyc-update.xyz/verify to prevent permanent suspension..."></textarea>
+            <div class="textarea-actions">
+              <button type="button" id="clear-text-btn" class="action-pill-btn" hidden>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="pill-icon" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                <span>Clear</span>
+              </button>
+              <button type="button" id="paste-clipboard-btn" class="action-pill-btn primary-action">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="pill-icon" aria-hidden="true"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                <span>Paste</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screenshot Attachment -->
+        <div class="upload-section">
+          <input type="file" id="img" accept="image/png,image/jpeg,image/webp" class="visually-hidden" tabindex="-1">
+          <label for="img" class="upload-trigger-btn" id="img-btn" tabindex="0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="upload-icon" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>+ Add a screenshot</span>
+          </label>
+          <div id="attachment-badge" class="attachment-chip" hidden>
+            <div class="attachment-thumb">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="thumb-icon" aria-hidden="true"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            </div>
+            <div class="attachment-meta">
+              <span id="img-name" class="attachment-filename">screenshot.png</span>
+              <span class="attachment-status">OCR Auto-Detection Ready</span>
+            </div>
+            <button type="button" id="img-clear" class="attachment-remove-btn" aria-label="Remove uploaded screenshot">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="remove-icon" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <img id="img-preview" class="image-preview" alt="Screenshot preview" hidden>
+        </div>
+
+        <!-- One-Click Example Chips -->
+        <div class="examples-section">
+          <div class="examples-header">
+            <span class="examples-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="example-icon" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Try a known scam template:
+            </span>
+            <span class="examples-subtitle">Instant benchmark check</span>
+          </div>
+          <div id="example-chips" class="chips-container"></div>
+        </div>
+
+        <!-- Giant Cyber CTA Button -->
+        <div class="cta-row">
+          <button type="submit" id="check-btn" class="cta-glow-btn">
+            <span class="cta-shimmer" aria-hidden="true"></span>
+            <svg viewBox="0 0 24 24" fill="currentColor" class="cta-icon" aria-hidden="true"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+            <span class="cta-label">Check this message</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="arrow-icon" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+
+        <p id="check-error" class="error-banner" role="alert" hidden></p>
+
+        <!-- Privacy & Security Guarantee -->
+        <div class="trust-footer">
+          <span class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="trust-icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Client-side redaction: Account numbers and OTPs scrubbed before lookup
+          </span>
+          <span class="trust-badge">Zero-Log Encryption</span>
+        </div>
+      </form>
+
+      <!-- Inspection Preview & Results Column (Right Column) -->
+      <section id="result" class="result-column" aria-live="polite" aria-busy="false">
+        <div id="empty" class="panel-card radar-standby-card">
+          <div class="radar-header">
+            <div class="radar-title-group">
+              <span class="live-dot" aria-hidden="true"></span>
+              <h2 class="radar-title">Inspection Preview</h2>
+            </div>
+            <span class="standby-badge">Standby Mode</span>
+          </div>
+
+          <!-- Animated High-Tech Circular Radar Display -->
+          <div class="radar-screen-wrap" aria-hidden="true">
+            <div class="radar-ring ring-4"></div>
+            <div class="radar-ring ring-3"></div>
+            <div class="radar-ring ring-2"></div>
+            <div class="radar-ring ring-1"></div>
+            <div class="radar-axis-h"></div>
+            <div class="radar-axis-v"></div>
+
+            <svg class="radar-sweeper" viewBox="0 0 200 200">
+              <defs>
+                <linearGradient id="sweepGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00C2A8" stop-opacity="0.45"/>
+                  <stop offset="50%" stop-color="#4B2FE0" stop-opacity="0.15"/>
+                  <stop offset="100%" stop-color="#4B2FE0" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M 100 100 L 200 100 A 100 100 0 0 0 100 0 Z" fill="url(#sweepGrad)"/>
+            </svg>
+
+            <!-- Simulated Radar Blips -->
+            <div class="radar-blip blip-mint"></div>
+            <div class="radar-blip blip-crimson"></div>
+            <div class="radar-blip blip-indigo"></div>
+
+            <div class="radar-center-hub">
+              <div class="hub-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="hub-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </div>
+              <span class="hub-title">Awaiting Input</span>
+              <span class="hub-sub">Ready for message parsing</span>
+            </div>
+          </div>
+
+          <!-- Telemetry Status Grid -->
+          <div class="telemetry-grid">
+            <div class="telemetry-chip">
+              <span class="telemetry-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="telemetry-icon"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/></svg>
+                AI Threat Engine
+              </span>
+              <span class="telemetry-val val-green">READY</span>
+            </div>
+            <div class="telemetry-chip">
+              <span class="telemetry-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="telemetry-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Safe Browsing DB
+              </span>
+              <span class="telemetry-val val-green">CONNECTED</span>
+            </div>
+            <div class="telemetry-chip">
+              <span class="telemetry-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="telemetry-icon"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                Phishing Signatures
+              </span>
+              <span class="telemetry-val val-muted">UPDATED 2M AGO</span>
+            </div>
+          </div>
+
+          <!-- Diagnostics Provided Upon Scan -->
+          <div class="diagnostics-list">
+            <span class="diagnostics-heading">Diagnostics Provided Upon Scan:</span>
+            <div class="diag-item">
+              <div class="diag-icon-wrap indigo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+              </div>
+              <div class="diag-info">
+                <strong>Instant 0–100 Risk Gauge</strong>
+                <span>Probability score factoring urgency tricks, spoofed headers, and sender trust.</span>
+              </div>
+            </div>
+            <div class="diag-item">
+              <div class="diag-icon-wrap crimson">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </div>
+              <div class="diag-info">
+                <strong>Highlighted Phishing Markers</strong>
+                <span>Flagged malicious domains, psychological urgency hooks, and spoofed APKs.</span>
+              </div>
+            </div>
+            <div class="diag-item">
+              <div class="diag-icon-wrap mint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              </div>
+              <div class="diag-info">
+                <strong>Direct Bank &amp; Cybercrime Advice</strong>
+                <span>One-click portal complaints, blocking guides, and emergency freezing numbers.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============ PANEL 2: RECOVERY WORKSPACE ============ -->
+    <section id="panel-recover" role="tabpanel" aria-labelledby="tab-recover" class="recovery-workspace" hidden>
+      <!-- Critical Golden Hour Alert Banner -->
+      <div class="critical-alert-banner">
+        <div class="alert-content">
+          <div class="alert-header-row">
+            <span class="alert-badge">Critical Window Active</span>
+            <span class="golden-hour-text">Golden Hour Protocol: Next 2–3 Hours</span>
+          </div>
+          <h1 class="alert-heading">CALL 1930 IMMEDIATELY (National Cyber Crime Helpline)</h1>
+          <p class="alert-sub">Calling within the first 2-3 hours enables law enforcement and nodal banking desks to trigger the automated freeze protocol on the fraudster's beneficiary mule account before digital funds are withdrawn at ATMs.</p>
+        </div>
+        <div class="alert-action">
+          <a class="dial-1930-btn" href="tel:1930">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="btn-icon" aria-hidden="true"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.045 15.045 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1.01A11.36 11.36 0 018.57 3.9c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.52c0-.55-.45-1-.99-1z"/></svg>
+            <span>Dial 1930 Now</span>
+          </a>
+          <span class="alert-meta">Toll-Free • Ministry of Home Affairs (MHA) • 24/7 Priority</span>
+        </div>
+      </div>
+
+      <div class="workspace-grid recovery-grid">
+        <!-- Recovery Triage Form (Left) -->
+        <form id="recover-form" class="panel-card recover-form-card" novalidate>
+          <div class="card-section-header">
+            <div class="header-with-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sec-icon"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              <h2 class="card-title">Incident Triage Intake</h2>
+            </div>
+            <span class="triage-badge">Triage Level: CRITICAL</span>
+          </div>
+          <p class="field-hint">Select everything that occurred. Your containment protocol updates dynamically.</p>
+
+          <fieldset class="action-checklist">
+            <legend class="field-label">What happened?</legend>
+            <div id="action-list" class="checklist-grid"></div>
           </fieldset>
-        </div>
 
-        <button type="submit" id="check-btn" class="btn primary">Check this message</button>
-        <p id="check-error" class="error" role="alert" hidden></p>
+          <div class="form-fields-grid">
+            <div class="form-group">
+              <label class="field-label" for="amount">Amount Debited / Disputed (if any)</label>
+              <div class="input-with-prefix">
+                <span class="curr-prefix" aria-hidden="true">₹</span>
+                <input type="text" id="amount" maxlength="60" placeholder="e.g., 25,000">
+              </div>
+            </div>
 
-        <div class="examples">
-          <p class="field-label">No message handy? Try an example</p>
-          <div id="example-chips" class="chips"></div>
-        </div>
-      </form>
+            <div class="form-group">
+              <label class="field-label" for="details">Bank, UPI App or Scam Details (optional)</label>
+              <textarea id="details" rows="3" maxlength="600" placeholder="e.g., A caller claiming to be from SBI asked to update KYC. Money debited to Google Pay UPI ID..."></textarea>
+            </div>
 
-      <section id="result" class="result-col" aria-live="polite" aria-busy="false">
-        <div id="empty" class="empty card">
-          <h2>Your result will appear here</h2>
-          <p>You will see a verdict, the exact words that look dangerous, and what to do next.</p>
-          <p class="muted">Tip: scammers often copy a real bank's style. If a message asks for an OTP, a PIN or a fee, treat it as a scam until you have checked in the official app.</p>
-        </div>
-      </section>
+            <div class="form-group">
+              <label class="field-label" for="lang-recover">Explain in</label>
+              <select id="lang-recover" class="lang-select">
+                <option value="en" selected>English</option>
+                <option value="hi">हिन्दी (Hindi)</option>
+                <option value="kn">ಕನ್ನಡ (Kannada)</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" id="recover-btn" class="cta-glow-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="cta-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span class="cta-label">Get My Recovery Plan</span>
+          </button>
+          <p id="recover-error" class="error-banner" role="alert" hidden></p>
+
+          <!-- Major Bank Emergency Helplines -->
+          <div class="bank-helpline-box">
+            <div class="box-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="box-icon"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <span>Major Bank Hotlines (Emergency Lock)</span>
+            </div>
+            <div class="bank-grid">
+              <div class="bank-card">
+                <span class="bank-name">SBI (State Bank)</span>
+                <a class="bank-phone" href="tel:1800111109">1800 11 1109</a>
+                <span class="bank-sub">SMS 'BLOCK' to 567676</span>
+              </div>
+              <div class="bank-card">
+                <span class="bank-name">HDFC Bank</span>
+                <a class="bank-phone" href="tel:18001600">1800 1600</a>
+                <span class="bank-sub">NetBanking Lock Portal</span>
+              </div>
+              <div class="bank-card">
+                <span class="bank-name">ICICI Bank</span>
+                <a class="bank-phone" href="tel:18001080">1800 1080</a>
+                <span class="bank-sub">iMobile Instant Freeze</span>
+              </div>
+              <div class="bank-card">
+                <span class="bank-name">Axis Bank</span>
+                <a class="bank-phone" href="tel:18604195555">1860 419 5555</a>
+                <span class="bank-sub">Emergency Debit Stop</span>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <!-- Recovery Plan Output (Right) -->
+        <section id="recover-result" class="result-column" aria-live="polite">
+          <div class="panel-card empty-recovery-card">
+            <h2 class="card-title">Your Step-by-Step Recovery Plan</h2>
+            <p>If money has left your account, dial <a href="tel:1930" class="strong-link">1930</a> (National Cyber Crime Helpline) right now to freeze the beneficiary account. You do not need to wait for this plan.</p>
+            <div class="quick-tips-box">
+              <div class="tip-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tip-icon"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <div>
+                  <strong>Golden Hour Rule</strong>
+                  <span>Reporting within 120 minutes gives the highest probability of blocking funds.</span>
+                </div>
+              </div>
+              <div class="tip-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tip-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <div>
+                  <strong>RBI Zero Liability</strong>
+                  <span>Report within 3 days to protect third-party breach claim rights.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </section>
 
-    <!-- ============ RECOVER ============ -->
-    <section id="panel-recover" role="tabpanel" aria-labelledby="tab-recover" class="grid" hidden>
-      <form id="recover-form" class="card input-card" novalidate>
-        <h2 class="card-title">Already replied or clicked? Start here.</h2>
-        <p class="muted">It happens to careful people too. Tick everything that applies and you will get an ordered plan. Nothing is saved.</p>
-
-        <fieldset class="checks">
-          <legend class="field-label">What happened?</legend>
-          <div id="action-list"></div>
-        </fieldset>
-
-        <label class="field-label" for="amount">Money lost, if any (optional)</label>
-        <input type="text" id="amount" maxlength="60" placeholder="For example: Rs 4,999">
-
-        <label class="field-label" for="details">Anything else to add (optional)</label>
-        <textarea id="details" rows="3" maxlength="600" placeholder="For example: A man called saying he was from the bank..."></textarea>
-
-        <label class="field-label" for="lang-recover">Explain in</label>
-        <select id="lang-recover">
-          <option value="en">English</option>
-          <option value="hi">हिन्दी (Hindi)</option>
-          <option value="kn">ಕನ್ನಡ (Kannada)</option>
-        </select>
-
-        <button type="submit" id="recover-btn" class="btn primary">Get my recovery plan</button>
-        <p id="recover-error" class="error" role="alert" hidden></p>
-      </form>
-
-      <section id="recover-result" class="result-col" aria-live="polite">
-        <div class="empty card">
-          <h2>Your plan will appear here</h2>
-          <p>If money has left your account, call <a href="tel:1930" class="strong-link">1930</a> (National Cyber Crime Helpline) first. You do not need to wait for this plan.</p>
+    <!-- Quick Knowledge Verification Banner -->
+    <div class="knowledge-banner">
+      <div class="knowledge-content">
+        <div class="knowledge-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
         </div>
-      </section>
-    </section>
+        <div class="knowledge-text">
+          <strong>Standard Operating Verification</strong>
+          <p>Indian banks NEVER send shortened links (bit.ly, tinyurl) asking for PAN, Aadhaar or OTP updates.</p>
+        </div>
+      </div>
+      <a class="knowledge-link" href="https://cybercrime.gov.in" target="_blank" rel="noopener noreferrer">
+        <span>Official Filing Guide</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="link-arrow"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </a>
+    </div>
   </main>
 
-  <footer class="wrap foot">
-    <p>ScamShield gives guidance, not a guarantee. Never share OTPs, PINs or passwords with anyone.</p>
-    <p>Messages and screenshots are sent to Google's Gemini API to be analysed. This app does not store them.</p>
+  <!-- Global Footer -->
+  <footer class="app-footer">
+    <div class="wrap footer-inner">
+      <div class="footer-left">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="footer-icon" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <p>ScamShield provides guidance, not a guarantee. Never share OTPs, PINs, or passwords with anyone.</p>
+      </div>
+      <div class="footer-right">
+        <span class="portal-label">Official Portal:</span>
+        <a class="portal-link" href="https://cybercrime.gov.in" target="_blank" rel="noopener noreferrer">
+          <span>cybercrime.gov.in</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ext-icon" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+    </div>
   </footer>
 
   <script src="/app.js" defer></script>
