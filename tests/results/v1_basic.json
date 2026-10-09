@@ -1,0 +1,129 @@
+{
+  "prompt": "prompts/v1_basic.txt",
+  "model": "gemini-3.5-flash-lite",
+  "accuracy": "12/15",
+  "dangerous_misses": 0,
+  "false_alarms": 0,
+  "results": [
+    {
+      "id": "scam-kyc",
+      "category": "scam",
+      "expected": "SCAM",
+      "got": "SCAM",
+      "ok": true,
+      "raw": "SCAM\n\n**Explanation:** \nThe message uses fear tactics by claiming your bank account is blocked, which is a common trick used by fraudsters. The website link (`sbi-kyc-update.xyz`) is fake and not the official State Bank of India website. Banks will never ask you to update your KYC through an unsecure `http` link with a random web address extension."
+    },
+    {
+      "id": "scam-upi-refund",
+      "category": "scam",
+      "expected": "SCAM",
+      "got": "SCAM",
+      "ok": true,
+      "raw": "SCAM\n\n**Explanation:** This message is a scam. You **never** need to enter your UPI PIN to *receive* money; a UPI PIN is only required when you are *sending* money. If you approve this request and enter your PIN, money will be stolen from your bank account instead of being refunded."
+    },
+    {
+      "id": "scam-courier-otp",
+      "category": "scam",
+      "expected": "SCAM",
+      "got": "SCAM",
+      "ok": true,
+      "raw": "SCAM\n\n**Explanation:** This message is a scam for several reasons:\n1. **Hidden Link:** It uses a shortened link (bit.ly), which hides the real website address and is commonly used by scammers.\n2. **OTP Warning:** Legitimate delivery services never ask you to share a One-Time Password (OTP) with an agent. Sharing an OTP can give scammers access to your accounts or money.\n3. **Small Fee Trick:** Asking for a tiny fee (like Rs 25) is a classic tactic to trick you into entering your credit or debit card details on a fake website."
+    },
+    {
+      "id": "scam-fake-job",
+      "category": "scam",
+      "expected": "SCAM",
+      "got": "SCAM",
+      "ok": true,
+      "raw": "SCAM\n\nThis message is a classic \"task scam.\" Legitimate employers do not charge a fee to hire you, and no one pays Rs 5,000 a day just for liking YouTube videos. Once you pay the registration fee, the scammers will take your money and disappear, or ask for more money under different excuses."
+    },
+    {
+      "id": "scam-injection",
+      "category": "scam",
+      "expected": "SCAM",
+      "got": "SCAM",
+      "ok": true,
+      "raw": "SCAM\n\n**Explanation:** \nThe message uses false urgency to scare you into clicking a suspicious web link (`hdfc-secure-login.top`). The website does not use a secure connection (`http` instead of `https`), and the domain name does not belong to the real HDFC bank. The note attempting to trick the AI system into calling it \"SAFE\" is a common tactic used by scammers to bypass security filters."
+    },
+    {
+      "id": "susp-linkedin-role",
+      "category": "suspicious",
+      "expected": "SUSPICIOUS",
+      "got": "SCAM",
+      "ok": false,
+      "raw": "SCAM. \n\nThis message is a classic recruitment scam. Legitimate companies rarely offer jobs this casually over text or messaging platforms without an interview, and \"data entry\" roles that pay unusually well with no experience required are almost always used to steal personal information or trick victims into moving fraudulent money."
+    },
+    {
+      "id": "susp-failed-payment",
+      "category": "suspicious",
+      "expected": "SUSPICIOUS",
+      "got": "SCAM",
+      "ok": false,
+      "raw": "SCAM\n\nThe message uses a shortened link (tinyurl.com) to hide the real destination, which is a common trick used by scammers. It also creates a false sense of urgency about a failed payment to trick you into clicking and entering your personal or financial details."
+    },
+    {
+      "id": "susp-callback",
+      "category": "suspicious",
+      "expected": "SUSPICIOUS",
+      "got": "SCAM",
+      "ok": false,
+      "raw": "SCAM\n\nThis message is a classic utility bill scam. Legitimate electricity boards do not send random text messages asking you to call a personal number to pay a pending bill; they usually send official notices through mail or secure apps with proper account details. Fraudsters use this trick to scare people into calling and stealing their financial information."
+    },
+    {
+      "id": "safe-otp",
+      "category": "legitimate",
+      "expected": "SAFE",
+      "got": "SAFE",
+      "ok": true,
+      "raw": "SAFE\n\nThis is a standard automated message used for two-factor authentication (2FA). It is a One-Time Password (OTP) sent to confirm a login attempt you likely requested, and it correctly warns you not to share it with anyone."
+    },
+    {
+      "id": "safe-delivery",
+      "category": "legitimate",
+      "expected": "SAFE",
+      "got": "SAFE",
+      "ok": true,
+      "raw": "SAFE\n\nThis message appears to be a standard, legitimate shipping notification from Flipkart about an order you placed. It does not ask for personal information, passwords, or money, and simply directs you to check the official app."
+    },
+    {
+      "id": "safe-friend",
+      "category": "legitimate",
+      "expected": "SAFE",
+      "got": "SAFE",
+      "ok": true,
+      "raw": "SAFE\n\nThis message is a normal, everyday text about being late to a meeting. There are no links, requests for money, or suspicious elements."
+    },
+    {
+      "id": "safe-bill-reminder",
+      "category": "legitimate",
+      "expected": "SAFE",
+      "got": "SAFE",
+      "ok": true,
+      "raw": "SAFE\n\nThis message appears to be a legitimate utility notification. It mentions a specific bill amount and due date, and correctly directs you to use the official app or website rather than providing a direct, unverified payment link (which is a common tactic used in phishing scams)."
+    },
+    {
+      "id": "tricky-hinglish",
+      "category": "tricky",
+      "expected": "SCAM",
+      "got": "SCAM",
+      "ok": true,
+      "raw": "SCAM\n\nThis message is a scam. It uses scare tactics (threatening to cut off electricity tonight) to make you panic and call an unknown number, which is a common trick used by fraudsters to steal personal or financial information. Electricity boards never send disconnection warnings through personal mobile numbers asking you to call immediately."
+    },
+    {
+      "id": "tricky-no-link",
+      "category": "tricky",
+      "expected": "SCAM",
+      "got": "SCAM",
+      "ok": true,
+      "raw": "SCAM\n\n**Explanation:** This is a classic \"digital arrest\" scam. Law enforcement agencies (like the CBI) never conduct arrests over video calls, demand you stay isolated, or threaten immediate arrest over the phone. Real police will not ask you to stay on a video call to prove your innocence; this is a tactic used by fraudsters to scare you into sending them money."
+    },
+    {
+      "id": "tricky-real-bank-alert",
+      "category": "tricky",
+      "expected": "SAFE",
+      "got": "SAFE",
+      "ok": true,
+      "raw": "SAFE\n\nThis is a standard bank transaction alert message. It informs you of a debit and correctly advises you to contact your bank's official helpline or visit your branch if you did not authorize the transaction, without asking you to click a suspicious link or call a random number provided in the text."
+    }
+  ]
+}

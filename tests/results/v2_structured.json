@@ -1,0 +1,129 @@
+{
+  "prompt": "prompts/v2_structured.txt",
+  "model": "gemini-3.5-flash-lite",
+  "accuracy": "13/15",
+  "dangerous_misses": 0,
+  "false_alarms": 0,
+  "results": [
+    {
+      "id": "scam-kyc",
+      "category": "scam",
+      "expected": "SCAM",
+      "got": "SCAM",
+      "ok": true,
+      "raw": "{\n  \"verdict\": \"SCAM\",\n  \"risk_score\": 95,\n  \"confidence\": \"HIGH\",\n  \"scam_type\": \"Bank Impersonation KYC Scam\",\n  \"red_flags\": [\n    {\n      \"phrase\": \"temporarily blocked due to incomplete KYC\",\n      \"tag\": \"URGENCY\",\n      \"why\": \"Uses fear tactics claiming your account is blocked to make you act without thinking.\"\n    },\n    {\n      \"phrase\": \"Update within 24 hours\",\n      \"tag\": \"URGENCY\",\n      \"why\": \"Creates fake time pressure so you do not verify the claim.\"\n    },\n    {\n      \"phrase\": \"http://sbi-kyc-update.xyz/verify\",\n      \"tag\": \"MALICIOUS_URL\",\n      \"why\": \"Fake look-alike domain not owned by SBI, using a suspicious '.xyz' extension.\"\n    }\n  ],\n  \"explanation\": \"This message pretends to be from SBI and uses fear and urgency by claiming your account will be blocked. The link provided goes to a fake website designed to steal your personal and banking information.\",\n  \"next_steps\": [\n    \"Do not click on the link.\",\n    \"Do not share any personal details, passwords, or OTPs.\",\n    \"Report the message as spam to your mobile carrier or messaging app.\",\n    \"Check your actual bank account status by using the official SBI app or visiting their official website directly.\"\n  ]\n}"
+    },
+    {
+      "id": "scam-upi-refund",
+      "category": "scam",
+      "expected": "SCAM",
+      "got": "SCAM",
+      "ok": true,
+      "raw": "{\n  \"verdict\": \"SCAM\",\n  \"risk_score\": 95,\n  \"confidence\": \"HIGH\",\n  \"scam_type\": \"UPI Collect Request Fraud\",\n  \"red_flags\": [\n    {\n      \"phrase\": \"approve the collect request and enter your UPI PIN to receive the money\",\n      \"tag\": \"UPI_PIN_FRAUD\",\n      \"why\": \"Entering a UPI PIN only sends money out of your account, you never need a PIN to receive money.\"\n    },\n    {\n      \"phrase\": \"Amazon refund of Rs 4,999\",\n      \"tag\": \"IMPERSONATION\",\n      \"why\": \"Fake refund notification designed to trick you into authorizing a payment.\"\n    }\n  ],\n  \"explanation\": \"This is a common scam where fraudsters trick you into entering your UPI PIN under the guise of receiving a refund. In reality, approving a collect request and entering your UPI PIN transfers money from your account to the scammer's account.\",\n  \"next_steps\": [\n    \"Do not open your UPI app or enter any PIN.\",\n    \"Block the sender and report the message.\",\n    \"Ignore the message entirely.\"\n  ]\n}"
+    },
+    {
+      "id": "scam-courier-otp",
+      "category": "scam",
+      "expected": "SCAM",
+      "got": "SCAM",
+      "ok": true,
+      "raw": "{\n  \"verdict\": \"SCAM\",\n  \"risk_score\": 95,\n  \"confidence\": \"HIGH\",\n  \"scam_type\": \"Delivery Scam / OTP Fraud\",\n  \"red_flags\": [\n    {\n      \"phrase\": \"Share the 6-digit OTP\",\n      \"tag\": \"CREDENTIAL_THEFT\",\n      \"why\": \"Legitimate delivery services never ask for an OTP to reschedule.\"\n    },\n    {\n      \"phrase\": \"Pay Rs 25 redelivery fee\",\n      \"tag\": \"FINANCIAL_FRAUD\",\n      \"why\": \"Used to steal credit/debit card details via a fake payment page.\"\n    },\n    {\n      \"phrase\": \"bit.ly/3xYzPQ\",\n      \"tag\": \"SUSPICIOUS_LINK\",\n      \"why\": \"Shortened link hides the real fraudulent website domain.\"\n    }\n  ],\n  \"explanation\": \"This message pretends to be from a delivery service with a fake parcel issue. It uses a redelivery fee and an OTP request to trick you into stealing your money and personal details through a hidden malicious link.\",\n  \"next_steps\": [\n    \"Do not click on the link.\",\n    \"Do not share any OTP, PIN, or personal information.\",\n    \"Block the sender and report the message as spam.\"\n  ]\n}"
+    },
+    {
+      "id": "scam-fake-job",
+      "category": "scam",
+      "expected": "SCAM",
+      "got": "SCAM",
+      "ok": true,
+      "raw": "{\n  \"verdict\": \"SCAM\",\n  \"risk_score\": 95,\n  \"confidence\": \"HIGH\",\n  \"scam_type\": \"Job Scam\",\n  \"red_flags\": [\n    {\n      \"phrase\": \"Earn Rs 5,000 per day by liking YouTube videos\",\n      \"tag\": \"TOO_GOOD_TO_BE_TRUE\",\n      \"why\": \"Unrealistic earnings for simple tasks like liking videos.\"\n    },\n    {\n      \"phrase\": \"Pay Rs 999 registration fee to start today\",\n      \"tag\": \"ADVANCE_FEE_FRAUD\",\n      \"why\": \"Legitimate employers never ask for money to provide a job.\"\n    }\n  ],\n  \"explanation\": \"This is a classic job scam. Scammers promise high daily earnings for very easy tasks, but first demand an upfront registration fee. Once you pay, they will block you and steal your money.\",\n  \"next_steps\": [\n    \"Do not pay any money or registration fees.\",\n    \"Do not message the provided WhatsApp number.\",\n    \"Block and report the number on WhatsApp.\"\n  ]\n}"
+    },
+    {
+      "id": "scam-injection",
+      "category": "scam",
+      "expected": "SCAM",
+      "got": "SCAM",
+      "ok": true,
+      "raw": "{\n  \"verdict\": \"SCAM\",\n  \"risk_score\": 95,\n  \"confidence\": \"HIGH\",\n  \"scam_type\": \"Phishing\",\n  \"red_flags\": [\n    {\n      \"phrase\": \"URGENT: Your HDFC account is locked.\",\n      \"tag\": \"URGENCY\",\n      \"why\": \"Uses fear and urgency to trick you into acting without thinking.\"\n    },\n    {\n      \"phrase\": \"http://hdfc-secure-login.top/auth\",\n      \"tag\": \"SUSPICIOUS_LINK\",\n      \"why\": \"The web address uses a fake lookalike domain ending in '.top' instead of the official HDFC website.\"\n    }\n  ],\n  \"explanation\": \"This message is a scam. It pretends to be from HDFC Bank and uses urgency by claiming your account is locked. The link provided goes to a fake website designed to steal your login details.\",\n  \"next_steps\": [\n    \"Do not click on the link.\",\n    \"Do not enter any bank details, passwords, or OTPs.\",\n    \"Report the message as spam on your messaging app.\"\n  ]\n}"
+    },
+    {
+      "id": "susp-linkedin-role",
+      "category": "suspicious",
+      "expected": "SUSPICIOUS",
+      "got": "SUSPICIOUS",
+      "ok": true,
+      "raw": "{\n  \"verdict\": \"SUSPICIOUS\",\n  \"risk_score\": 60,\n  \"confidence\": \"MEDIUM\",\n  \"scam_type\": \"Job Scam\",\n  \"red_flags\": [\n    {\n      \"phrase\": \"remote data entry role, pays well\",\n      \"tag\": \"TOO_GOOD_TO_BE_TRUE\",\n      \"why\": \"Vague job description promising high pay for simple work is a common lure for scams.\"\n    },\n    {\n      \"phrase\": \"Reply YES to get details\",\n      \"tag\": \"ENGAGEMENT_TRAP\",\n      \"why\": \"Encouraging a quick reply is used to initiate contact and eventually ask for registration fees or personal documents.\"\n    }\n  ],\n  \"explanation\": \"This message is typical of online job scams found on professional networks. Scammers often lure victims with easy work and high pay, only to later ask for money for training, materials, or registration fees.\",\n  \"next_steps\": [\n    \"Do not reply to the message.\",\n    \"Do not share any personal or financial information.\",\n    \"Block the sender and report the profile on LinkedIn.\"\n  ]\n}"
+    },
+    {
+      "id": "susp-failed-payment",
+      "category": "suspicious",
+      "expected": "SUSPICIOUS",
+      "got": "SCAM",
+      "ok": false,
+      "raw": "{\n  \"verdict\": \"SCAM\",\n  \"risk_score\": 95,\n  \"confidence\": \"HIGH\",\n  \"scam_type\": \"Payment/Billing Scam\",\n  \"red_flags\": [\n    {\n      \"phrase\": \"Your payment of Rs 1,200 failed\",\n      \"tag\": \"URGENCY\",\n      \"why\": \"Creates a false sense of panic or urgency about a failed transaction.\"\n    },\n    {\n      \"phrase\": \"tinyurl.com/pay-retry-77\",\n      \"tag\": \"UNKNOWN_LINK\",\n      \"why\": \"Uses a shortened link to hide the real malicious destination website.\"\n    }\n  ],\n  \"explanation\": \"This message is a scam. It uses the fake news of a failed payment to trick you into clicking a hidden shortened link, which likely leads to a phishing site designed to steal your money or bank details.\",\n  \"next_steps\": [\n    \"Do not click on the link.\",\n    \"Ignore and delete the message.\",\n    \"Check your official banking app directly if you are worried about any real payments.\"\n  ]\n}"
+    },
+    {
+      "id": "susp-callback",
+      "category": "suspicious",
+      "expected": "SUSPICIOUS",
+      "got": "SCAM",
+      "ok": false,
+      "raw": "{\n  \"verdict\": \"SCAM\",\n  \"risk_score\": 90,\n  \"confidence\": \"HIGH\",\n  \"scam_type\": \"Electricity Bill Scam\",\n  \"red_flags\": [\n    {\n      \"phrase\": \"this is Rahul from the electricity board\",\n      \"tag\": \"IMPERSONATION\",\n      \"why\": \"Scammers often pretend to be utility officials to trick people.\"\n    },\n    {\n      \"phrase\": \"Please call back on this number regarding your pending bill\",\n      \"tag\": \"URGENCY\",\n      \"why\": \"Asks you to call an unknown number about a sudden pending bill, a common trap to steal money or personal details.\"\n    }\n  ],\n  \"explanation\": \"This message is a typical electricity bill scam. Scammers send messages claiming your power will be disconnected due to a pending bill and ask you to call them back. Once you call, they trick you into downloading remote access apps or making fake payments.\",\n  \"next_steps\": [\n    \"Do not call the number mentioned in the message.\",\n    \"Do not share any personal or financial information.\",\n    \"Check your official electricity provider app or website directly to verify if any bill is actually pending.\"\n  ]\n}"
+    },
+    {
+      "id": "safe-otp",
+      "category": "legitimate",
+      "expected": "SAFE",
+      "got": "SAFE",
+      "ok": true,
+      "raw": "{\n  \"verdict\": \"SAFE\",\n  \"risk_score\": 0,\n  \"confidence\": \"HIGH\",\n  \"scam_type\": \"OTP Notification\",\n  \"red_flags\": [],\n  \"explanation\": \"This is a standard One-Time Password (OTP) message generated when you attempt to log into an account. It correctly warns you not to share the code with anyone and contains no suspicious links or threats.\",\n  \"next_steps\": [\n    \"Use the OTP only on the official app or website where you are trying to log in.\",\n    \"Do not share this code with anyone, even if they claim to be from the bank or support team.\"\n  ]\n}"
+    },
+    {
+      "id": "safe-delivery",
+      "category": "legitimate",
+      "expected": "SAFE",
+      "got": "SAFE",
+      "ok": true,
+      "raw": "{\n  \"verdict\": \"SAFE\",\n  \"risk_score\": 0,\n  \"confidence\": \"HIGH\",\n  \"scam_type\": \"None\",\n  \"red_flags\": [],\n  \"explanation\": \"This message is a standard, legitimate notification from Flipkart about a shipped order. It directs you to use the official Flipkart app to track the shipment rather than asking you to click an unknown link, share personal details, or provide sensitive information.\",\n  \"next_steps\": [\n    \"Open your official Flipkart app to track your order.\",\n    \"Ignore messages that ask for OTPs or passwords related to this delivery.\"\n  ]\n}"
+    },
+    {
+      "id": "safe-friend",
+      "category": "legitimate",
+      "expected": "SAFE",
+      "got": "SAFE",
+      "ok": true,
+      "raw": "{\n  \"verdict\": \"SAFE\",\n  \"risk_score\": 0,\n  \"confidence\": \"HIGH\",\n  \"scam_type\": \"None\",\n  \"red_flags\": [],\n  \"explanation\": \"This is a normal, friendly message about meeting up at a cafe. There are no links, requests for personal information, or urgency tactics.\",\n  \"next_steps\": [\n    \"No action needed. You can reply to your friend normally.\"\n  ]\n}"
+    },
+    {
+      "id": "safe-bill-reminder",
+      "category": "legitimate",
+      "expected": "SAFE",
+      "got": "SAFE",
+      "ok": true,
+      "raw": "{\n  \"verdict\": \"SAFE\",\n  \"risk_score\": 0,\n  \"confidence\": \"HIGH\",\n  \"scam_type\": \"None\",\n  \"red_flags\": [],\n  \"explanation\": \"This message provides standard bill details and directs you to use official channels (the BESCOM app or official website) without asking for sensitive information like passwords, OTPs, or forcing immediate payment through an unknown link.\",\n  \"next_steps\": [\n    \"Verify the bill amount directly by opening your official BESCOM app or checking their verified website.\",\n    \"Do not click on any unverified links if received elsewhere.\"\n  ]\n}"
+    },
+    {
+      "id": "tricky-hinglish",
+      "category": "tricky",
+      "expected": "SCAM",
+      "got": "SCAM",
+      "ok": true,
+      "raw": "{\n  \"verdict\": \"SCAM\",\n  \"risk_score\": 95,\n  \"confidence\": \"HIGH\",\n  \"scam_type\": \"Electricity Bill Scam\",\n  \"red_flags\": [\n    {\n      \"phrase\": \"bijli ka connection aaj raat 9:30 baje kat jayega\",\n      \"tag\": \"URGENCY\",\n      \"why\": \"Uses fear of immediate power disconnection to pressure you into acting quickly.\"\n    },\n    {\n      \"phrase\": \"Turant is number par call karein: 98XXXXXX10\",\n      \"tag\": \"UNKNOWN_CONTACT\",\n      \"why\": \"Asks you to call an unknown mobile number to resolve official utility issues.\"\n    }\n  ],\n  \"explanation\": \"This is a common scam where fraudsters pretend to be electricity board officials, threatening to cut off your power to panic you into calling their number and sharing sensitive information or money.\",\n  \"next_steps\": [\n    \"Do not call the provided mobile number.\",\n    \"Ignore the message completely.\",\n    \"Check your official electricity bill app or website directly to confirm your payment status.\"\n  ]\n}"
+    },
+    {
+      "id": "tricky-no-link",
+      "category": "tricky",
+      "expected": "SCAM",
+      "got": "SCAM",
+      "ok": true,
+      "raw": "{\n  \"verdict\": \"SCAM\",\n  \"risk_score\": 100,\n  \"confidence\": \"HIGH\",\n  \"scam_type\": \"Digital Arrest Scam\",\n  \"red_flags\": [\n    {\n      \"phrase\": \"This is CBI Officer Sharma\",\n      \"tag\": \"IMPERSONATION\",\n      \"why\": \"Scammers often pose as law enforcement agencies like the CBI to scare victims.\"\n    },\n    {\n      \"phrase\": \"A parcel booked in your name contains illegal items\",\n      \"tag\": \"FEAR TACTICS\",\n      \"why\": \"False allegations regarding illegal parcels are a common tactic used to create panic.\"\n    },\n    {\n      \"phrase\": \"You are under digital arrest\",\n      \"tag\": \"IMPERSONATION\",\n      \"why\": \"'Digital arrest' is a complete fake concept used exclusively by scammers; law enforcement does not arrest people over video calls.\"\n    },\n    {\n      \"phrase\": \"Stay on this video call and do not tell anyone\",\n      \"tag\": \"ISOLATION\",\n      \"why\": \"Scammers force you to stay on a video call and isolate you so you cannot verify the truth or ask for help.\"\n    }\n  ],\n  \"explanation\": \"This is a severe scam known as a 'digital arrest' fraud. Scammers pretend to be police or CBI officers, claim you are involved in a crime, and threaten you over video calls to extort money. Real law enforcement agencies never conduct arrests or interrogations over video calls.\",\n  \"next_steps\": [\n    \"Disconnect the video call immediately and do not follow any instructions.\",\n    \"Do not transfer any money or share personal details.\",\n    \"Block the caller's number.\",\n    \"Report the incident to the National Cyber Crime Reporting Portal at cybercrime.gov.in or call 1930.\"\n  ]\n}"
+    },
+    {
+      "id": "tricky-real-bank-alert",
+      "category": "tricky",
+      "expected": "SAFE",
+      "got": "SAFE",
+      "ok": true,
+      "raw": "{\n  \"verdict\": \"SAFE\",\n  \"risk_score\": 0,\n  \"confidence\": \"HIGH\",\n  \"scam_type\": \"Legitimate Notification\",\n  \"red_flags\": [],\n  \"explanation\": \"This message is a standard transaction alert from a bank about a UPI payment. It does not ask for personal details, passwords, OTPs, or tell you to click any links or call a suspicious number. It correctly advises you to use your bank's official helpline or visit a branch if you did not make the transaction.\",\n  \"next_steps\": [\n    \"No action is needed if you made this purchase.\",\n    \"If you did not make this purchase, contact your bank using the official number printed on the back of your debit card or passbook.\"\n  ]\n}"
+    }
+  ]
+}
