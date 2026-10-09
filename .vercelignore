@@ -1,0 +1,8 @@
+# Not needed at runtime. Do NOT ignore prompts/ or templates/.
+tests/
+docs/
+examples.md
+.env
+.env.*
+venv/
+.venv/

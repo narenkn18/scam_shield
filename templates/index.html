@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ScamShield: check a message before you trust it</title>
+  <meta name="description" content="Paste a message, link or screenshot and find out if it is a scam. Explanations in English, Hindi and Kannada.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@600;800&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+Kannada:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body data-max-mb="{{ max_mb }}">
+  <a class="skip-link" href="#main">Skip to the main content</a>
+  <header class="top">
+    <div class="wrap top-inner">
+      <p class="brand"><mark class="brand-mark">Scam</mark>Shield</p>
+      <p class="tagline">Got a strange message? Check it here before you reply, click or pay.</p>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="tabs" role="tablist" aria-label="What do you need?">
+      <button class="tab" role="tab" id="tab-check" aria-selected="true" aria-controls="panel-check" type="button">Check a message</button>
+      <button class="tab" role="tab" id="tab-recover" aria-selected="false" tabindex="-1" aria-controls="panel-recover" type="button">I already replied or clicked</button>
+    </div>
+  </div>
+
+  <main class="wrap" id="main" tabindex="-1">
+    <!-- ============ CHECK ============ -->
+    <section id="panel-check" role="tabpanel" aria-labelledby="tab-check" class="grid">
+      <form id="check-form" class="card input-card" novalidate>
+        <label class="field-label" for="msg">Paste the message or link</label>
+        <textarea id="msg" rows="7" maxlength="{{ max_chars }}" placeholder="For example: &quot;Your bank account will be blocked today. Update KYC here...&quot;"></textarea>
+
+        <div class="upload">
+          <input type="file" id="img" accept="image/png,image/jpeg,image/webp" class="visually-hidden" tabindex="-1">
+          <label for="img" class="btn secondary" id="img-btn" tabindex="0">Add a screenshot</label>
+          <span id="img-name" class="muted"></span>
+          <button type="button" id="img-clear" class="linklike" hidden>Remove</button>
+        </div>
+        <img id="img-preview" class="preview" alt="Preview of your screenshot" hidden>
+
+        <div class="options">
+          <div>
+            <label class="field-label" for="lang-check">Explain in</label>
+            <select id="lang-check">
+              <option value="en">English</option>
+              <option value="hi">हिन्दी (Hindi)</option>
+              <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            </select>
+          </div>
+          <fieldset class="seg">
+            <legend class="field-label">Style</legend>
+            <label><input type="radio" name="mode" value="simple" checked><span>Simple</span></label>
+            <label><input type="radio" name="mode" value="detailed"><span>Detailed</span></label>
+          </fieldset>
+        </div>
+
+        <button type="submit" id="check-btn" class="btn primary">Check this message</button>
+        <p id="check-error" class="error" role="alert" hidden></p>
+
+        <div class="examples">
+          <p class="field-label">No message handy? Try an example</p>
+          <div id="example-chips" class="chips"></div>
+        </div>
+      </form>
+
+      <section id="result" class="result-col" aria-live="polite" aria-busy="false">
+        <div id="empty" class="empty card">
+          <h2>Your result will appear here</h2>
+          <p>You will see a verdict, the exact words that look dangerous, and what to do next.</p>
+          <p class="muted">Tip: scammers often copy a real bank's style. If a message asks for an OTP, a PIN or a fee, treat it as a scam until you have checked in the official app.</p>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============ RECOVER ============ -->
+    <section id="panel-recover" role="tabpanel" aria-labelledby="tab-recover" class="grid" hidden>
+      <form id="recover-form" class="card input-card" novalidate>
+        <h2 class="card-title">Already replied or clicked? Start here.</h2>
+        <p class="muted">It happens to careful people too. Tick everything that applies and you will get an ordered plan. Nothing is saved.</p>
+
+        <fieldset class="checks">
+          <legend class="field-label">What happened?</legend>
+          <div id="action-list"></div>
+        </fieldset>
+
+        <label class="field-label" for="amount">Money lost, if any (optional)</label>
+        <input type="text" id="amount" maxlength="60" placeholder="For example: Rs 4,999">
+
+        <label class="field-label" for="details">Anything else to add (optional)</label>
+        <textarea id="details" rows="3" maxlength="600" placeholder="For example: A man called saying he was from the bank..."></textarea>
+
+        <label class="field-label" for="lang-recover">Explain in</label>
+        <select id="lang-recover">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी (Hindi)</option>
+          <option value="kn">ಕನ್ನಡ (Kannada)</option>
+        </select>
+
+        <button type="submit" id="recover-btn" class="btn primary">Get my recovery plan</button>
+        <p id="recover-error" class="error" role="alert" hidden></p>
+      </form>
+
+      <section id="recover-result" class="result-col" aria-live="polite">
+        <div class="empty card">
+          <h2>Your plan will appear here</h2>
+          <p>If money has left your account, call <a href="tel:1930" class="strong-link">1930</a> (National Cyber Crime Helpline) first. You do not need to wait for this plan.</p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>ScamShield gives guidance, not a guarantee. Never share OTPs, PINs or passwords with anyone.</p>
+    <p>Messages and screenshots are sent to Google's Gemini API to be analysed. This app does not store them.</p>
+  </footer>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
