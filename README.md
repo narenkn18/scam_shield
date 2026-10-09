@@ -2,8 +2,8 @@
 
 **An AI safety assistant that tells ordinary people, in their own language, whether a message is a scam, shows exactly which words give it away, and guides them step by step if they have already replied or clicked.**
 
-**Track:** AI-Powered Cybersecurity & Digital Safety
-**Live demo:** _add your Vercel link here_ | **Demo video:** _add link here_
+**Track:** AI-Powered Cybersecurity & Digital Safety  
+**Live demo:** [https://scamshield-production-8e0b.up.railway.app/](https://scamshield-production-8e0b.up.railway.app/) | **Repository:** [https://github.com/narenkn18/scam_shield](https://github.com/narenkn18/scam_shield)
 
 ## The problem
 
@@ -41,12 +41,12 @@ analyzer.py            Prompt assembly, Gemini call, output validation and guard
 recovery.py            Built-in recovery plan (offline fallback)
 config.py              Environment-based settings
 urlcheck.py            Link analysis: heuristics plus Google Safe Browsing
-prompts/               v1_basic, v2_structured, v3_final, system_prompt (used by the app), recovery_prompt, CHANGELOG.md
-tests/                 test_cases.json, run_tests.py (accuracy), test_app.py (offline unit tests)
+prompts/               v1_basic, v2_structured, v3_final, system_prompt, recovery_prompt, CHANGELOG.md
+tests/                 test_cases.json, run_tests.py (accuracy), test_app.py, test_urlcheck.py
 templates/, public/    Frontend (HTML template; CSS and JS served from public/)
-SECURITY.md, pyproject.toml, .github/workflows/ci.yml   Security notes, lint config, CI
-examples.md            Sample inputs and where to record real results
-.vercelignore          Keeps tests and docs out of the deployment bundle
+DEMO_SCRIPT.md         3-minute and 2-minute pitch scripts and judge Q&A answers
+SECURITY.md, pyproject.toml, .github/workflows/ci.yml, Procfile   Security, lint, CI and deployment
+examples.md            Sample inputs and test cases
 ```
 
 ## Problem statement alignment
@@ -87,16 +87,27 @@ If the Safe Browsing key is missing or the lookup fails, the app still works usi
 ## Run it locally
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/scamshield.git
-cd scamshield
+git clone https://github.com/narenkn18/scam_shield.git
+cd scam_shield
 python -m venv venv
 source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env            # Windows: copy .env.example .env
 # open .env and paste your Gemini key from https://aistudio.google.com/apikey
 # optional: add GOOGLE_SAFE_BROWSING_API_KEY (enable "Safe Browsing API" in Google Cloud Console)
-python app.py                   # http://localhost:5000  (Vercel users: `vercel dev` also works)
+python app.py                   # http://localhost:5000
 ```
+
+## Deploy on Railway (Recommended)
+
+1. Push this repo to GitHub (check that `.env` is not in it).
+2. On [railway.app](https://railway.app): **New Project > Deploy from GitHub repo**, select `narenkn18/scam_shield`.
+3. Under **Variables** add:
+   - `GEMINI_API_KEY`: your Gemini API key from Google AI Studio
+   - `GEMINI_MODEL`: `gemini-3.5-flash-lite`
+   - (Optional) `GOOGLE_SAFE_BROWSING_API_KEY`: your Safe Browsing key
+4. Under **Settings > Networking**, click **Generate Domain**.
+5. Open `https://<YOUR-APP>.up.railway.app/health` to confirm `"status": "ok"` and `"prompts_loaded": true`.
 
 ## Deploy on Vercel
 
@@ -104,21 +115,8 @@ Vercel runs Flask with zero configuration: it finds the `app` object in `app.py`
 
 1. Push this repo to GitHub (check that `.env` is not in it).
 2. On [vercel.com](https://vercel.com): **Add New > Project**, import the repo, keep the detected Flask preset.
-3. Under **Environment Variables** add `GEMINI_API_KEY` (optionally also `GOOGLE_SAFE_BROWSING_API_KEY` and `GEMINI_MODEL`). Then **Deploy**.
+3. Under **Environment Variables** add `GEMINI_API_KEY` (optionally also `GOOGLE_SAFE_BROWSING_API_KEY` and `GEMINI_MODEL=gemini-3.5-flash-lite`). Then **Deploy**.
 4. Open `https://YOUR-APP.vercel.app/health`. It should report `"status": "ok"`, `"prompts_loaded": true` and `"api_key_configured": true`.
-5. Put the live URL at the top of this README.
-
-CLI alternative: `npm i -g vercel`, then `vercel` (preview) and `vercel --prod`.
-
-What to know about Vercel:
-
-- **Static files live in `public/`**, not `static/`. The templates reference `/style.css` and `/app.js`.
-- **Request bodies are limited to 4.5 MB**, so the image cap is 4 MB and the browser shrinks large screenshots before uploading.
-- **The filesystem is read-only**, which is fine because the app stores nothing.
-- **The rate limiter is in memory**, so each serverless instance counts separately. It is a best-effort guard. For a public link, also set a spending or quota limit on your Gemini key in Google AI Studio.
-- **Cold starts** make the first request after idle time slower. Open the site a few minutes before a demo.
-- After changing an environment variable, **redeploy** for it to take effect.
-- Every push to `main` redeploys. Avoid pushing risky changes right before presenting.
 
 ## Prompt engineering
 
